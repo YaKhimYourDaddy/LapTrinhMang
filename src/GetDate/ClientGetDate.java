@@ -22,10 +22,6 @@ public class ClientGetDate {
 
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         datagramSocket.receive(receivePacket);
-//        ByteArrayInputStream bais = new ByteArrayInputStream(receivePacket.getData());
-//        BufferedReader br = new BufferedReader(new InputStreamReader(bais));
-//        String receiveString = br.readLine();
-//        DataInputStream dis = new DataInputStream(bais);
         String receiveString = new String(receivePacket.getData(), 0, receivePacket.getLength());
         System.out.println("Receive from Server: " + receiveString);
 

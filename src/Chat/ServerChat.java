@@ -18,7 +18,7 @@ public class ServerChat {
             datagramSocket.receive(receivePacket);
 
             String receiveString = new String(receivePacket.getData(), 0, receivePacket.getLength());
-            System.out.println("Receive from Client: " + receiveString);
+            System.out.println("Client: " + receiveString);
 
 
             InetAddress ipAddress = receivePacket.getAddress();
