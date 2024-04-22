@@ -17,13 +17,13 @@ public class ServerChatRoom {
     }
 
     private void execute() throws IOException {
-        ServerSocket server = new ServerSocket(serverPort);
+        ServerSocket serverSocket = new ServerSocket(serverPort);
         ServerSendMessage write = new ServerSendMessage();
         write.start();
         System.out.println("Server is listening...");
         while (true) {
-            Socket socket = server.accept();
-            System.out.println("Đã kết nối với " + socket);
+            Socket socket = serverSocket.accept();
+            System.out.println("Connected with " + socket);
             ServerChatRoom.listSocket.add(socket);
             ServerReceiveMessage read = new ServerReceiveMessage(socket);
             read.start();
@@ -51,8 +51,8 @@ class ServerReceiveMessage implements Runnable {
         try {
             DataInputStream dis = new DataInputStream(socket.getInputStream());
             while (true) {
-                String sms = dis.readUTF();
-                if(sms.contains("exit")) {
+                String receiveString = dis.readUTF();
+                if(receiveString.contains("exit")) {
                     ServerChatRoom.listSocket.remove(socket);
                     System.out.println("Disconnected with " + socket);
                     dis.close();
@@ -62,10 +62,10 @@ class ServerReceiveMessage implements Runnable {
                 for (Socket item : ServerChatRoom.listSocket) {
                     if(item.getPort() != socket.getPort()) {
                         DataOutputStream dos = new DataOutputStream(item.getOutputStream());
-                        dos.writeUTF(sms);
+                        dos.writeUTF(receiveString);
                     }
                 }
-                System.out.println(sms);
+                System.out.println(receiveString);
             }
         } catch (Exception e) {
             try {
@@ -89,13 +89,13 @@ class ServerSendMessage extends Thread {
     @Override
     public void run() {
         DataOutputStream dos = null;
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         while (true) {
-            String sms = sc.nextLine();	//Đang đợi Server nhập dữ liệu
+            String sendString = scanner.nextLine();
             try {
                 for (Socket item : ServerChatRoom.listSocket) {
                     dos = new DataOutputStream(item.getOutputStream());
-                    dos.writeUTF("Server: " + sms);
+                    dos.writeUTF("Server: " + sendString);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
