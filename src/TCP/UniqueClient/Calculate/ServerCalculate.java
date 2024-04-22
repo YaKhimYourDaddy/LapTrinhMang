@@ -11,7 +11,7 @@ import java.net.Socket;
 public class ServerCalculate {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(2222);
-        System.out.println("Server is started.");
+        System.out.println("Server is started. A Client must start the conversation");
 
         while (true) {
             Socket socket = serverSocket.accept();

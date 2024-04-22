@@ -8,11 +8,11 @@ import java.util.Scanner;
 public class SendingThread implements Runnable {
     private Thread thread;
     private Socket socket;
-    private String sender;
-    SendingThread(Socket socket, String sender) {
+    private String senderName;
+    SendingThread(Socket socket, String senderName) {
 
         this.socket = socket;
-        this.sender = sender;
+        this.senderName = senderName;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class SendingThread implements Runnable {
             scanner = new Scanner(System.in);
             dos = new DataOutputStream(socket.getOutputStream());
             while (true) {
-                String sendString = this.sender + ": " + scanner.nextLine();
+                String sendString = this.senderName + ": " + scanner.nextLine();
                 dos.writeUTF(sendString);
                 dos.flush();
             }
