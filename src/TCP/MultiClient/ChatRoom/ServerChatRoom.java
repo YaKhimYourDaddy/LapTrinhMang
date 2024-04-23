@@ -17,15 +17,15 @@ public class ServerChatRoom {
     }
 
     private void execute() throws IOException {
-        ServerSocket server = new ServerSocket(serverPort);
-        ServerSendMessage write = new ServerSendMessage();
+        ServerSocket serverSocket = new ServerSocket(serverPort);
+        ServerChatRoomSender write = new ServerChatRoomSender();
         write.start();
         System.out.println("Server is listening...");
         while (true) {
-            Socket socket = server.accept();
-            System.out.println("Đã kết nối với " + socket);
+            Socket socket = serverSocket.accept();
+            System.out.println("Connected with " + socket);
             ServerChatRoom.listSocket.add(socket);
-            ServerReceiveMessage read = new ServerReceiveMessage(socket);
+            ServerChatRoomReceiver read = new ServerChatRoomReceiver(socket);
             read.start();
         }
     }
@@ -38,11 +38,11 @@ public class ServerChatRoom {
 
 }
 
-class ServerReceiveMessage implements Runnable {
+class ServerChatRoomReceiver implements Runnable {
     private Thread thread;
     private Socket socket;
 
-    public ServerReceiveMessage(Socket socket) {
+    public ServerChatRoomReceiver(Socket socket) {
         this.socket = socket;
     }
 
@@ -84,14 +84,15 @@ class ServerReceiveMessage implements Runnable {
     }
 }
 
-class ServerSendMessage extends Thread {
+class ServerChatRoomSender implements Runnable {
+    private Thread thread;
 
     @Override
     public void run() {
         DataOutputStream dos = null;
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         while (true) {
-            String sms = sc.nextLine();	//Đang đợi Server nhập dữ liệu
+            String sms = scanner.nextLine();
             try {
                 for (Socket item : ServerChatRoom.listSocket) {
                     dos = new DataOutputStream(item.getOutputStream());
@@ -103,5 +104,10 @@ class ServerSendMessage extends Thread {
 
         }
     }
-
+    public void start() {
+        if (thread == null) {
+            thread = new Thread(this);
+            thread.start();
+        }
+    }
 }
