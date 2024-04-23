@@ -25,3 +25,7 @@
 //    private Socket socket;
 //    private Thread thread;
 //}
+package TCP.MultiClient.Calculate;
+
+public class ServerCalculate {
+}
