@@ -18,15 +18,15 @@ public class ServerChatRoom {
 
     private void execute() throws IOException {
         ServerSocket serverSocket = new ServerSocket(serverPort);
-        ServerChatRoomSender write = new ServerChatRoomSender();
-        write.start();
+        ServerChatRoomSender sender = new ServerChatRoomSender();
+        sender.start();
         System.out.println("Server is listening...");
         while (true) {
             Socket socket = serverSocket.accept();
             System.out.println("Connected with " + socket);
             ServerChatRoom.listSocket.add(socket);
-            ServerChatRoomReceiver read = new ServerChatRoomReceiver(socket);
-            read.start();
+            ServerChatRoomReceiver receiver = new ServerChatRoomReceiver(socket);
+            receiver.start();
         }
     }
 
@@ -71,7 +71,7 @@ class ServerChatRoomReceiver implements Runnable {
             try {
                 socket.close();
             } catch (IOException ex) {
-                System.out.println("Disconnected  Server");
+                System.out.println("Disconnected Server");
             }
         }
     }

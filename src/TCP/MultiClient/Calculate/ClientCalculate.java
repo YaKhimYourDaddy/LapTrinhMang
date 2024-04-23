@@ -90,10 +90,12 @@ class ClientCalculateSender implements Runnable {
         try {
             dos = new DataOutputStream(client.getOutputStream());
             scanner = new Scanner(System.in);
+            int countExpression = 0;
             while(true) {
-                System.out.println("Input a math expression: ");
+                System.out.println("Input math expression " +  countExpression + ": ");
                 String sms = scanner.nextLine();
                 dos.writeUTF(name + ": " + sms);
+                countExpression++;
             }
         } catch (Exception e) {
             try {
