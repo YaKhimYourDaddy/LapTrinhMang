@@ -84,7 +84,9 @@ class ServerReceiveMessage implements Runnable {
     }
 }
 
-class ServerSendMessage extends Thread {
+class ServerSendMessage implements Runnable {
+
+    private Thread thread;
 
     @Override
     public void run() {
@@ -101,6 +103,13 @@ class ServerSendMessage extends Thread {
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    public void start() {
+        if (thread == null) {
+            thread = new Thread(this);
+            thread.start();
         }
     }
 
