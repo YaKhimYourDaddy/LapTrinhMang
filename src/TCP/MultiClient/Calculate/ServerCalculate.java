@@ -68,7 +68,7 @@ class CalculateClientHandler implements Runnable {
                     socket.close();
                     continue; // already disconnected
                 }
-                String respond = "Result of Expression 0 : " + Double.toString(ExpressionEvaluator.evaluate(sms));
+                String respond = sms + " = " + Double.toString(ExpressionEvaluator.evaluate(sms));
                 dos.writeUTF(respond);
                 dos.flush();
             }
